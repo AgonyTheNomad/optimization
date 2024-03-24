@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from background.indicators import calculate_rsi, calculate_atr, calculate_adx
+from background.indicators import calculate_rsi, calculate_atr, calculate_adx, calculate_ema
 
 def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period, atr_period, adx_period, ema_period):
     balance = 1000
@@ -15,15 +15,15 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
     pnl_list = []  # List to store the PnL of each trade
     risk_free_rate_annual = 0.05
     risk_free_rate_58_days = (1 + risk_free_rate_annual) ** (58 / 252) - 1
-    taker_main_fee = .00025
-    maker_main_fee = .00002
+    taker_main_fee = .00035
+    maker_main_fee = .00010
     total_maker = 0
     total_taker = 0
     slippage = .0002
     
 
     trades = [] 
-
+    data['EMA'] = calculate_ema(data, ema_period)
     data['RSI'] = calculate_rsi(data, rsi_period)
     data['ATR'] = calculate_atr(data, atr_period)
     data['ADX'], data['EMA_ADX'] = calculate_adx(data, adx_period, ema_period)
@@ -31,7 +31,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
     for i in range(len(data)):
         try:
             row = data.iloc[i]
-            rsi, close, high, low, atr, adx, ema_adx = row['RSI'], row['Close'], row['High'], row['Low'], row['ATR'], row['ADX'], row['EMA_ADX']
+            rsi, close, high, low, atr, adx, ema_adx, ema = row['RSI'], row['Close'], row['High'], row['Low'], row['ATR'], row['ADX'], row['EMA_ADX'], row['EMA']
 
             if pd.isna([rsi, close, high, low, atr, adx, ema_adx]).any():
                 continue
@@ -42,7 +42,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
 
             # Long trade entry condition
             if adx > ema_adx and position == 0:
-                if rsi < rsi_entry and prev_rsi > rsi_entry:
+                if rsi < rsi_entry and prev_rsi > rsi_entry and close > ema:
                     # Long trade
                     stop_loss = close - atr * atr_multiplier 
                     trade_open_price = close
@@ -58,7 +58,24 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                     trade_open_index = i
                     trade_type = 'Long'
 
-                elif rsi > rsi_exit and prev_rsi < rsi_exit:
+                    trades.append({
+                        'Open Timestamp': data.index[i],
+                        'Close Timestamp': None,
+                        'Open Price': trade_open_price,
+                        'Close Price': None,
+                        'Stop Loss': stop_loss,
+                        'Take Profit': take_profit,
+                        'Trade Type': 'Long',
+                        'Close Timestamp': None,
+                        'Close Price':  None,
+                        'Position':  None,
+                        'Trade Type':  None,
+                        'PnL':  None,
+                        'New Balance':  None
+                            
+                    })
+
+                elif rsi > rsi_exit and prev_rsi < rsi_exit and close < ema:
                     # Short trade
                     trade_open_price = close
                     stop_loss = close + atr * atr_multiplier
@@ -72,6 +89,23 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                     start_maker = -1 * abs(position) * close * taker_main_fee
                     trade_open_index = i
                     trade_type = 'Short'
+
+                    trades.append({
+                        'Open Timestamp': data.index[i],
+                        'Close Timestamp': None,
+                        'Open Price': trade_open_price,
+                        'Close Price': None,
+                        'Stop Loss': stop_loss,
+                        'Take Profit': take_profit,
+                        'Trade Type': 'Short',
+                        'Close Timestamp': None,
+                        'Close Price':  None,
+                        'Position':  None,
+                        'Trade Type':  None,
+                        'PnL':  None,
+                        'New Balance':  None
+                            
+                    })
 
                         # Check for opposite signal when in a long position
             if position > 0 and rsi > 64 and prev_rsi < 64:
@@ -97,7 +131,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
 
             if position != 0:
                 if position > 0:
-                    if low <= stop_loss:
+                    if low * (1 - 0.0005)<= stop_loss:
                         taker = abs(position) * close * taker_main_fee
                         pnl = (stop_loss - trade_open_price) * abs(position) - taker + start_maker
                         position = 0
@@ -107,7 +141,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                         total_taker -= taker
 
                     elif high >= take_profit:  # Replaced 'else' with 'elif'
-                        maker = abs(position) * close * maker_main_fee 
+                        maker = -1 * abs(position) * close * maker_main_fee 
                         pnl = (take_profit - trade_open_price) * abs(position) + start_maker + maker
                         position = 0
                         trade_closed = True
@@ -116,7 +150,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                         total_maker += maker
 
                 elif position < 0:
-                    if high >= stop_loss:
+                    if high * (1 + 0.0005)>= stop_loss:
                         taker = abs(position) * close * taker_main_fee
                         pnl = (trade_open_price - stop_loss) * abs(position) - taker + start_maker
                         position = 0
@@ -126,7 +160,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                         total_taker -= taker
 
                     elif low <= take_profit:  # Replaced 'else' with 'elif'
-                        maker = abs(position) * close * maker_main_fee
+                        maker = -1 *abs(position) * close * maker_main_fee
                         pnl = (trade_open_price - take_profit) * abs(position) + start_maker + maker
                         position = 0
                         trade_closed = True
@@ -137,31 +171,28 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
 
 
             if trade_closed:
+                if trade_open_index != i:  # Ensure trade wasn't opened and closed on the same candle
+                    pnl_list.append(pnl)  # Add the PnL of the closed trade to the list
+                    total_trades += 1
+                    winning_trades += (pnl > 0)
+                    losing_trades += (pnl < 0)
+                    sum_wins += max(0, pnl)
+                    sum_losses += min(0, pnl)
+                    balance += pnl 
+                    current_balance = balance
+                    peak_balance = max(peak_balance, current_balance)
+                    drawdown = 100 * ((peak_balance - current_balance) / peak_balance)
+                    max_drawdown = max(max_drawdown, drawdown)
 
-                pnl_list.append(pnl)  # Add the PnL of the closed trade to the list
-                total_trades += 1
-                winning_trades += (pnl > 0)
-                losing_trades += (pnl < 0)
-                sum_wins += max(0, pnl)
-                sum_losses += min(0, pnl)
-                balance += pnl 
-                current_balance = balance
-                peak_balance = max(peak_balance, current_balance)
-                drawdown = 100 * ((peak_balance - current_balance) / peak_balance)
-                max_drawdown = max(max_drawdown, drawdown)
-
-                trade = {
-                    'Open Index': trade_open_index,
-                    'Close Index': i,
-                    'Open Price': trade_open_price,
-                    'Close Price': close,
-                    'Position': position,
-                    'Trade Type': trade_type,
-                    'PnL': pnl,
-                    'New Balance': balance
-                }
-                trades.append(trade)
-
+                    trade = {
+                        'Close Timestamp': data.index[i],
+                        'Close Price': close,
+                        'Position': position,
+                        'Trade Type': 'trade close',
+                        'PnL': pnl,
+                        'New Balance': balance
+                    }
+                    trades.append(trade)
             prev_rsi = rsi
 
         except Exception as e:

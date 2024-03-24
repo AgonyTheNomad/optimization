@@ -29,10 +29,10 @@ def optimize_parameters(data, output_folder='optimized', crypto_name='crypto', t
         'rsi_exit_range': range(60, 80, 2),
         'atr_multiplier_range': np.arange(1, 3.0, .50),
         'reward_ratio_range': np.arange(.50, 3, 0.25),
-        'rsi_range': range(10, 15, 5),
-        'atr_range': range(14, 15),
-        'adx_range': range(5, 30, 5),
-        'ema_range': range(5, 40, 5),
+        'rsi_period': range(10, 15, 5),
+        'atr_period': range(14, 15),
+        'adx_period': range(5, 30, 5),
+        'ema_period': range(5, 100, 5),  # Ensure EMA period is included in parameter optimization
     }
 
     param_combinations = [(data,) + p for p in itertools.product(*param_ranges.values()) if p[6] < p[7]]
@@ -59,7 +59,7 @@ def optimize_parameters(data, output_folder='optimized', crypto_name='crypto', t
 def save_to_file(sorted_data, file_path, include_win_rate=False):
     with open(file_path, 'w') as file:
         for win_rate, pnl, params in sorted_data:
-            params_str = ', '.join([f"{name}: {value}" for name, value in zip(["RSI Entry", "RSI Exit", "ATR Multiplier", "Reward Ratio", "RSI Period", "ATR Period", "ADX Period", "EMA Period"], params)])
+            params_str = ', '.join([f"{name}: {value}" for name, value in zip(["RSI Entry", "RSI Exit", "ATR Multiplier", "Reward Ratio", "RSI Period", "ATR Period", "ADX Period", "EMA Period", "EMA"], params)])
             if include_win_rate:
                 file.write(f'PnL: {pnl}, Win Rate: {win_rate}%, Parameters: ({params_str})\n')
             else:
