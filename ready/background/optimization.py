@@ -18,17 +18,16 @@ def optimize_parameters(data, output_folder='optimized', crypto_name='crypto', t
     top_pnl_file = os.path.join(output_folder, f'{crypto_name}_top_pnls.csv')
 
     top_params = []
-    
+
     param_ranges = {
-        'rsi_entry_range': range(38, 40, 2),
-        'rsi_exit_range': range(78, 80, 2),
-        'atr_multiplier_range': np.arange(1, 3.0, 0.50),
-        'reward_ratio_range': np.arange(0.50, 3, 0.25),
+        'rsi_entry_range': range(20, 40, 2),
+        'rsi_exit_range': range(60, 80, 2),
+        'atr_multiplier_range': np.arange(1, 3.0, .50),
+        'reward_ratio_range': np.arange(.50, 3, 0.25),
         'rsi_period': range(10, 15, 5),
         'atr_period': range(14, 15),
         'adx_period': range(5, 30, 5),
-        'ema_close_period': range(95, 100, 5),
-        'ema_adx_period': range(45, 50, 5),
+        'ema_period': range(5, 100, 5),
     }
 
     # Generate all combinations of parameters
