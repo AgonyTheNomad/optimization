@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from background.indicators import calculate_rsi, calculate_atr, calculate_adx, calculate_ema
 
-def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period, atr_period, adx_period, ema_period):
+def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period, atr_period, adx_period, ema_close_period, ema_adx_period):
     balance = 1000
     starting_balance = balance
     risk_percent = .03
@@ -23,15 +23,15 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
     
 
     trades = [] 
-    data['EMA'] = calculate_ema(data, ema_period)
+    data['EMA_Close'] = calculate_ema(data['Close'], ema_close_period)
     data['RSI'] = calculate_rsi(data, rsi_period)
     data['ATR'] = calculate_atr(data, atr_period)
-    data['ADX'], data['EMA_ADX'] = calculate_adx(data, adx_period, ema_period)
+    data['ADX'], data['EMA_ADX'] = calculate_adx(data, adx_period, ema_adx_period)
 
     for i in range(len(data)):
         try:
             row = data.iloc[i]
-            rsi, close, high, low, atr, adx, ema_adx, ema = row['RSI'], row['Close'], row['High'], row['Low'], row['ATR'], row['ADX'], row['EMA_ADX'], row['EMA']
+            rsi, close, high, low, atr, adx, ema_adx, ema_close = row['RSI'], row['Close'], row['High'], row['Low'], row['ATR'], row['ADX'], row['EMA_ADX'], row['EMA_Close']
 
             if pd.isna([rsi, close, high, low, atr, adx, ema_adx]).any():
                 continue
@@ -42,7 +42,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
 
             # Long trade entry condition
             if adx > ema_adx and position == 0:
-                if rsi < rsi_entry and prev_rsi > rsi_entry and close > ema:
+                if rsi < rsi_entry and prev_rsi > rsi_entry and close > ema_close_period:
                     # Long trade
                     stop_loss = close - atr * atr_multiplier 
                     trade_open_price = close
@@ -75,7 +75,7 @@ def backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, rsi_period
                             
                     })
 
-                elif rsi > rsi_exit and prev_rsi < rsi_exit and close < ema:
+                elif rsi > rsi_exit and prev_rsi < rsi_exit and close < ema_close_period:
                     # Short trade
                     trade_open_price = close
                     stop_loss = close + atr * atr_multiplier

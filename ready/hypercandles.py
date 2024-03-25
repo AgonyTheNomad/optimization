@@ -21,7 +21,7 @@ for file_path in py_files:
     
     # Calculate start time and end time
     current_time = int(time.time()) * 1000  # in milliseconds
-    interval = '5m'  # desired interval
+    interval = '1m'  # desired interval
     num_intervals = 17280  # number of intervals in 24 hours (24 * 60 / 5)
     start_time = current_time - num_intervals * int(interval[:-1]) * 60 * 1000  # in milliseconds
     end_time = current_time
