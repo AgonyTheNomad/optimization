@@ -9,7 +9,7 @@ logging.basicConfig(filename='error.log', level=logging.DEBUG, format='%(asctime
 def main():
     try:
         # Specify the cryptocurrency file you want to process
-        crypto_file = 'DODGE.csv'
+        crypto_file = 'DOGE.csv'
         crypto_name = crypto_file.replace('.csv', '')  # Corrected for '.csv'
         data_file = f'{crypto_file}'
 
