@@ -1,5 +1,7 @@
 import optuna
 from tqdm import tqdm
+from pymongo import MongoClient
+
 from backtest import CryptoBacktester
 from joblib import Parallel, delayed
 from analyze_results import load_results, plot_pairplot, plot_heatmap
@@ -7,6 +9,12 @@ import pandas as pd
 import sys
 import json
 import os
+
+
+
+storage = optuna.storages.RDBStorage('postgresql://postgres:Feb201995@8.tcp.us-cal-1.ngrok.io:19859')
+
+
 
 def objective(trial):
     # Define the parameter space using Optuna
@@ -25,13 +33,12 @@ def objective(trial):
     total_pnl, win_rate, total_trades, max_drawdown = backtester.run_backtest()
 
     alpha, beta, gamma, delta = 0.5, 0.3, 100, 0.1
-    expected_trades = 50000
     composite_score = (
         (total_pnl * alpha) -
         (max_drawdown * beta) +
         (win_rate * gamma) -
-        (abs(expected_trades - total_trades) * delta)
-    )
+        (total_trades) * delta)
+    
 
     # Set custom attributes for the trial
     trial.set_user_attr("total_pnl", total_pnl)
@@ -44,10 +51,16 @@ def objective(trial):
 
 
 def run_optimization():
-    study = optuna.create_study(direction='minimize', pruner=optuna.pruners.MedianPruner())
-    n_trials = 50000
-    # Use n_jobs=-1 to use all available CPU cores
-    study.optimize(objective, n_trials=n_trials, n_jobs=50, show_progress_bar=True)
+    # Create a study object with MongoDB storage
+    study = optuna.create_study(
+        storage=storage,
+        study_name='optimization_study',
+        load_if_exists=True,
+        direction='minimize',
+        pruner=optuna.pruners.MedianPruner()
+    )
+    n_trials = 100
+    study.optimize(objective, n_trials=n_trials, n_jobs=-1, show_progress_bar=True)
 
     best_params = study.best_params
     print(f"Best Parameters: {best_params}")
