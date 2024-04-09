@@ -1,69 +1,98 @@
-import itertools
-import pandas as pd
-import numpy as np
-from background.backtest import backtest
+import optuna
 from tqdm import tqdm
-from multiprocessing import Pool
+from backtest import CryptoBacktester
+from joblib import Parallel, delayed
+from analyze_results import load_results, plot_pairplot, plot_heatmap
+import pandas as pd
+import sys
+import json
 import os
 
-def optimize_parameters_worker(params):
-    # Unpack parameters
-    data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, adx_period, ema_period, ema_close = params
-    # Execute backtest with provided parameters
-    result = backtest(data, rsi_entry, rsi_exit, atr_multiplier, reward_ratio, adx_period, ema_period, ema_close)
-    return result, params
-def optimize_parameters(data, output_folder='optimized', crypto_name='crypto', top_n=5):
-    # Ensure the output folder exists
-    if not os.path.exists(output_folder):
-        os.makedirs(output_folder)
-    
-    # File paths
-    top_results_file = os.path.join(output_folder, f'{crypto_name}_top_results.csv')
-    top_pnl_file = os.path.join(output_folder, f'{crypto_name}_top_pnls.csv')
-
-    top_params = []  # This will store tuples of (win_rate, pnl, params)
-    
-    # Define parameter ranges
-    param_ranges = {
-        'rsi_entry_range': range(20, 40, 2),
-        'rsi_exit_range': range(60, 80, 2),
-        'atr_multiplier_range': np.arange(1, 3.0, .50),
-        'reward_ratio_range': np.arange(.50, 3, 0.25),
-        'adx_period': range(5, 35, 10),
-        'ema_period': range(10, 40, 10),  # Ensure EMA period is included in parameter optimization
-        "ema_close": range(5, 100, 10)
+def objective(trial):
+    # Define the parameter space using Optuna
+    params = {
+        'rsi_entry': trial.suggest_float('rsi_entry', 10, 40),
+        'rsi_exit': trial.suggest_float('rsi_exit', 60, 80),
+        'atr_multiplier': trial.suggest_float('atr_multiplier', 1, 5),
+        'reward_risk_ratio': trial.suggest_float('reward_risk_ratio', 0.5, 3),
+        'adx_period': trial.suggest_int('adx_period', 5, 30),
+        'ema_adx': trial.suggest_int('ema_adx', 10, 50),
+        'ema_close': trial.suggest_int('ema_close', 2, 100),
+        'volume_ema_period': trial.suggest_int('volume_ema_period', 5, 30),
     }
 
-    param_combinations = [(data,) + p for p in itertools.product(*param_ranges.values()) if p[4] < p[5]]
+    backtester = CryptoBacktester('../ETH.csv', 'ETH', params)
+    total_pnl, win_rate, total_trades, max_drawdown = backtester.run_backtest()
 
-    with Pool() as pool:
-        results = list(tqdm(pool.imap_unordered(optimize_parameters_worker, param_combinations), total=len(param_combinations), desc="Optimization Progress"))
-        
-        for result, params in results:
-            try:
-                win_rate, pnl = result[2], result[3]  # Assuming result structure includes win rate at index 2 and PnL at index 3
-                params_without_data = params[1:]  # Exclude 'data' from params
-                top_params.append((win_rate, pnl, params_without_data))
-            except Exception as e:
-                print(f"Error processing result: {e}")
+    alpha, beta, gamma, delta = 0.5, 0.3, 100, 0.1
+    expected_trades = 50000
+    composite_score = (
+        (total_pnl * alpha) -
+        (max_drawdown * beta) +
+        (win_rate * gamma) -
+        (abs(expected_trades - total_trades) * delta)
+    )
 
-    # Sort and write the top win rates to the file
-    top_sorted_by_win_rate = sorted(top_params, key=lambda x: x[0], reverse=True)[:top_n]
-    save_to_file(top_sorted_by_win_rate, top_results_file)
+    # Set custom attributes for the trial
+    trial.set_user_attr("total_pnl", total_pnl)
+    trial.set_user_attr("win_rate", win_rate)
+    trial.set_user_attr("total_trades", total_trades)
+    trial.set_user_attr("max_drawdown", max_drawdown)
+    trial.set_user_attr("composite_score", composite_score)
 
-    # Sort and write the top PnLs to the file, including win rates
-    top_sorted_by_pnl = sorted(top_params, key=lambda x: x[1], reverse=True)[:top_n]
-    save_to_file(top_sorted_by_pnl, top_pnl_file, include_win_rate=True)
+    return -composite_score
 
-def save_to_file(sorted_data, file_path, include_win_rate=False):
-    with open(file_path, 'w') as file:
-        for win_rate, pnl, params in sorted_data:
-            params_str = ', '.join([f"{name}: {value}" for name, value in zip(["RSI Entry", "RSI Exit", "ATR Multiplier", "Reward Ratio",  "ADX Period", "EMA Period", "EMA"], params)])
-            if include_win_rate:
-                file.write(f'PnL: {pnl}, Win Rate: {win_rate}%, Parameters: ({params_str})\n')
-            else:
-                file.write(f'Win Rate: {win_rate}%, PnL: {pnl}, Parameters: ({params_str})\n')
 
-    print(f"Data saved to {file_path}")
+def run_optimization():
+    study = optuna.create_study(direction='minimize', pruner=optuna.pruners.MedianPruner())
+    n_trials = 50000
+    # Use n_jobs=-1 to use all available CPU cores
+    study.optimize(objective, n_trials=n_trials, n_jobs=50, show_progress_bar=True)
 
-print("\nA new best paramater.")
+    best_params = study.best_params
+    print(f"Best Parameters: {best_params}")
+    save_trial_results(study)
+    return best_params
+
+def save_trial_results(study):
+    results_path = "./optimization_results_detailed.json"
+    detailed_results = []
+    for trial in study.trials:
+        detailed_results.append({
+            "number": trial.number,
+            "value": trial.value,
+            "params": trial.params,
+            "total_pnl": trial.user_attrs["total_pnl"],
+            "win_rate": trial.user_attrs["win_rate"],
+            "total_trades": trial.user_attrs["total_trades"],
+            "max_drawdown": trial.user_attrs["max_drawdown"],
+            "composite_score": trial.user_attrs["composite_score"],
+        })
+    
+    with open(results_path, "w") as file:
+        json.dump(detailed_results, file, indent=4)
+    
+    print(f"Saved detailed optimization results to {results_path}")
+
+
+def perform_analysis():
+    results_df = load_results('../ETH_backtest_results.csv')
+    plot_pairplot(results_df)
+    plot_heatmap(results_df, 'rsi_entry', 'atr_multiplier', 'total_pnl')
+
+# At the end of your backtesting script
+if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "optimize":
+            best_params = run_optimization()
+            # Optionally, you can run a backtest with the best parameters found and save those results
+            # Ensure best_params is formatted correctly to be accepted by set_trading_params
+            backtester = CryptoBacktester('../ETH.csv', 'ETH', best_params)
+            backtester.set_trading_params(best_params)
+            backtester.run_backtest()
+        elif sys.argv[1] == "analyze":
+            perform_analysis()
+        else:
+            print("Invalid argument. Use 'optimize' or 'analyze'.")
+    else:
+        print("No argument provided. Please specify 'optimize' or 'analyze'.")

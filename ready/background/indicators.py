@@ -1,5 +1,6 @@
 import talib
 import logging
+import pandas as pd
 
 def calculate_rsi(data, window):
     if len(data) < window or data['Close'].isnull().any():
@@ -33,3 +34,17 @@ def calculate_ema(data, window):
         logging.warning(f"Insufficient data for EMA calculation. Data length: {len(data)}")
         return None
     return talib.EMA(data['Close'], timeperiod=window)
+
+
+def calculate_obv(data):
+    OBV = [0]  # Starting with an initial value
+    for i in range(1, len(data)):
+        if data['Close'][i] > data['Close'][i - 1]:
+            OBV.append(OBV[-1] + data['Volume'][i])
+        elif data['Close'][i] < data['Close'][i - 1]:
+            OBV.append(OBV[-1] - data['Volume'][i])
+        else:
+            OBV.append(OBV[-1])  # No change in price
+    return pd.Series(OBV, index=data.index)  # Ensuring the index matches
+
+
