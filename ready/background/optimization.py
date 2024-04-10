@@ -54,13 +54,19 @@ def objective(trial):
 
 
 def run_optimization():
+
+    pruner = optuna.pruners.HyperbandPruner(
+    min_resource=1,
+    max_resource=n_trials_to_run,
+    reduction_factor=3,
+)
     # Create a study object with MongoDB storage
     study = optuna.create_study(
         storage=storage,
         study_name='optimization_study',
         load_if_exists=True,
         direction='minimize',
-        pruner=optuna.pruners.MedianPruner()
+        pruner=pruner
     )
     
     # Determine the maximum number of trials you want to allow
