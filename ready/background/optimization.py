@@ -1,6 +1,9 @@
 import optuna
 from tqdm import tqdm
 from pymongo import MongoClient
+from optuna.visualization import plot_optimization_history
+import matplotlib.pyplot as plt
+
 
 from backtest import CryptoBacktester
 from joblib import Parallel, delayed
@@ -19,14 +22,14 @@ storage = optuna.storages.RDBStorage('postgresql://postgres:Feb201995@8.tcp.us-c
 def objective(trial):
     # Define the parameter space using Optuna
     params = {
-        'rsi_entry': trial.suggest_float('rsi_entry', 10, 40),
-        'rsi_exit': trial.suggest_float('rsi_exit', 60, 80),
-        'atr_multiplier': trial.suggest_float('atr_multiplier', 1, 5),
-        'reward_risk_ratio': trial.suggest_float('reward_risk_ratio', 0.5, 3),
-        'adx_period': trial.suggest_int('adx_period', 5, 30),
-        'ema_adx': trial.suggest_int('ema_adx', 10, 50),
-        'ema_close': trial.suggest_int('ema_close', 2, 100),
-        'volume_ema_period': trial.suggest_int('volume_ema_period', 5, 30),
+        'rsi_entry': trial.suggest_int('rsi_entry', 10, 40, step=2),
+        'rsi_exit': trial.suggest_int('rsi_exit', 60, 80, step=2),
+        'atr_multiplier': trial.suggest_float('atr_multiplier', 2, 3, step=0.50),
+        'reward_risk_ratio': trial.suggest_float('reward_risk_ratio', 0.5, 3, step=0.25),
+        'adx_period': trial.suggest_int('adx_period', 5, 35, step=10),
+        'ema_adx': trial.suggest_int('ema_adx', 10, 40, step=10),
+        'ema_close': trial.suggest_int('ema_close', 10, 100, step=10),
+        'volume_ema_period': trial.suggest_int('volume_ema_period', 5, 30, step=1),
     }
 
     backtester = CryptoBacktester('../ETH.csv', 'ETH', params)
@@ -59,33 +62,61 @@ def run_optimization():
         direction='minimize',
         pruner=optuna.pruners.MedianPruner()
     )
-    n_trials = 100
-    study.optimize(objective, n_trials=n_trials, n_jobs=-1, show_progress_bar=True)
-
-    best_params = study.best_params
-    print(f"Best Parameters: {best_params}")
-    save_trial_results(study)
-    return best_params
-
+    
+    # Determine the maximum number of trials you want to allow
+    max_total_trials = 10
+    
+    # Calculate the number of new trials to run, considering already completed trials
+    n_trials_to_run = max_total_trials - len(study.trials)
+    
+    # Ensure n_trials_to_run is not negative
+    n_trials_to_run = max(n_trials_to_run, 0)
+    
+    if n_trials_to_run > 0:
+        print(f"Running {n_trials_to_run} new trials...")
+        study.optimize(objective, n_trials=n_trials_to_run, n_jobs=-1, show_progress_bar=True)
+    
+        best_params = study.best_params
+        print(f"Best Parameters: {best_params}")
+        save_trial_results(study)
+        return best_params
+    else:
+        print("Maximum number of trials reached. No new trials will be run.")
+        return study.best_params  # Assuming there are already some trials
 def save_trial_results(study):
     results_path = "./optimization_results_detailed.json"
     detailed_results = []
     for trial in study.trials:
-        detailed_results.append({
+        # Initialize a dictionary to store the trial results
+        trial_results = {
             "number": trial.number,
             "value": trial.value,
             "params": trial.params,
-            "total_pnl": trial.user_attrs["total_pnl"],
-            "win_rate": trial.user_attrs["win_rate"],
-            "total_trades": trial.user_attrs["total_trades"],
-            "max_drawdown": trial.user_attrs["max_drawdown"],
-            "composite_score": trial.user_attrs["composite_score"],
-        })
+        }
+        
+        # List of expected user attributes
+        expected_attrs = ["total_pnl", "win_rate", "total_trades", "max_drawdown", "composite_score"]
+        
+        # Check each expected attribute and add it to trial_results if present
+        for attr in expected_attrs:
+            if attr in trial.user_attrs:
+                trial_results[attr] = trial.user_attrs[attr]
+            else:
+                # Handle missing attribute (e.g., by setting a default value or logging a warning)
+                # For this example, setting a default value of None
+                trial_results[attr] = None
+                print(f"Warning: Missing attribute '{attr}' for trial {trial.number}")
+        
+        # Append the collected trial results
+        detailed_results.append(trial_results)
     
+    # Write the collected results to a JSON file
     with open(results_path, "w") as file:
         json.dump(detailed_results, file, indent=4)
     
     print(f"Saved detailed optimization results to {results_path}")
+
+
 
 
 def perform_analysis():
@@ -103,6 +134,7 @@ if __name__ == "__main__":
             backtester = CryptoBacktester('../ETH.csv', 'ETH', best_params)
             backtester.set_trading_params(best_params)
             backtester.run_backtest()
+            
         elif sys.argv[1] == "analyze":
             perform_analysis()
         else:
