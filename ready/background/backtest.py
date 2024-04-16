@@ -7,6 +7,7 @@ import json
 
 
 
+
 # Example cryptocurrency - you might loop through or select based on your dataset
 
 class CryptoBacktester:
@@ -255,15 +256,23 @@ class CryptoBacktester:
             # Log the trade exit with fee details
 
     def run_backtest(self):
-        """Run the backtest and return performance metrics."""
+        """Run the backtest and return performance metrics in a dictionary format."""
         self.backtest_logic()
         total_pnl = self.calculate_total_pnl()
         win_rate = self.calculate_win_rate()
         total_trades = self.calculate_total_trades()
         max_drawdown = self.calculate_max_drawdown()
- # This can still save the trade data to a file
         
-        # Return the metrics needed for optimization
-        return total_pnl, win_rate, total_trades, max_drawdown
+        # Prepare the results in dictionary format
+        results = {
+            'total_pnl': total_pnl,
+            'win_rate': win_rate,
+            'total_trades': total_trades,
+            'max_drawdown': max_drawdown
+        }
+        
+        # This can still save the trade data to a file
+        
+        return results
 
 
