@@ -20,9 +20,6 @@ from tqdm import tqdm
 import os
 import sys
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(current_dir)
-
 
 
 output_directory = '../optimization'
@@ -81,8 +78,11 @@ def objective(params, redis_url, csv_path, symbol):
     redis_client.set(params_key, json.dumps(results))
     return results
 
-def run_optimization(client, n_trials=100, csv_directory='./ready'):
+def run_optimization(client, n_trials=100):
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
     storage = JournalStorage(JournalRedisStorage(redis_url))
+    csv_directory = os.path.join(script_dir, '../')
     csv_files = [f for f in os.listdir(csv_directory) if f.endswith('.csv')]
 
     for csv_file in csv_files:

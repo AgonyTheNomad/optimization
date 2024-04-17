@@ -1,15 +1,12 @@
 import os
-import psutil
 
-# Get the number of logical CPUs available to the OS (includes hyper-threaded cores)
-logical_cores = psutil.cpu_count()
-# Get the number of physical cores only
-physical_cores = psutil.cpu_count(logical=False)
+# Get the current working directory
+current_working_directory = os.getcwd()
 
-# Total memory
-memory_info = psutil.virtual_memory()
-total_memory_gb = memory_info.total / (1024**3)  # Convert from bytes to GB
+# Define your custom path
+custom_path = "OneDrive/desktop/optimize/optimization/ready"
 
-print(f"Logical CPU cores: {logical_cores}")
-print(f"Physical CPU cores: {physical_cores}")
-print(f"Total Memory: {total_memory_gb:.2f} GB")
+# Join the current working directory with the custom path
+full_path = os.path.join(current_working_directory, custom_path)
+
+print("The full path is:", full_path)
