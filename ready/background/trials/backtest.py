@@ -12,6 +12,7 @@ import json
 
 class CryptoBacktester:
     def __init__(self, candle_csv_path, crypto_symbol, params):
+        self.data = pd.DataFrame()  # Initialize data
         self.set_trading_params(params)
         self.candle_csv_path = candle_csv_path
         self.load_data()
@@ -19,11 +20,20 @@ class CryptoBacktester:
         self.equity_curve = [self.starting_balance]
 
 
-    def load_config(self, config_path, crypto_symbol):
-        with open(config_path, 'r') as file:
-            config = json.load(file)
-        params = config['cryptocurrencies'][crypto_symbol]
-        self.set_trading_params(params)
+
+    def load_data(self):
+        try:
+            self.data = pd.read_csv(self.candle_csv_path, parse_dates=['Timestamp'], index_col='Timestamp')
+            self.calculate_indicators()
+        except FileNotFoundError:
+            print(f"Error: The file {self.candle_csv_path} was not found.")
+            self.data = pd.DataFrame()  # Ensures 'data' attribute is always set
+        except pd.errors.EmptyDataError:
+            print("Error: The file is empty.")
+            self.data = pd.DataFrame()  # Ensures 'data' attribute is always set
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+            self.data = pd.DataFrame()  #
 
     def set_trading_params(self, params):
         self.params = params

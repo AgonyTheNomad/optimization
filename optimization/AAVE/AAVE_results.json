@@ -1,0 +1,605 @@
+{
+    "best_trial": [
+        "trial_14",
+        {
+            "total_pnl": 70.12474222106185,
+            "win_rate": 0.3764705882352941,
+            "total_trades": 85,
+            "max_drawdown": 0.044734024627039876
+        }
+    ],
+    "trial_0": {
+        "total_pnl": -138.34665213859466,
+        "win_rate": 0.15942028985507245,
+        "total_trades": 69,
+        "max_drawdown": 0.14901653763401404
+    },
+    "trial_1": {
+        "total_pnl": -33.44952125308898,
+        "win_rate": 0.345679012345679,
+        "total_trades": 162,
+        "max_drawdown": 0.07927649465614461
+    },
+    "trial_2": {
+        "total_pnl": -32.25948381402369,
+        "win_rate": 0.20833333333333334,
+        "total_trades": 24,
+        "max_drawdown": 0.03422855772322555
+    },
+    "trial_3": {
+        "total_pnl": -54.5045499846029,
+        "win_rate": 0.3953488372093023,
+        "total_trades": 86,
+        "max_drawdown": 0.07062315120765542
+    },
+    "trial_4": {
+        "total_pnl": -147.00717485721634,
+        "win_rate": 0.12162162162162163,
+        "total_trades": 74,
+        "max_drawdown": 0.15244303981653717
+    },
+    "trial_5": {
+        "total_pnl": -42.4285610672756,
+        "win_rate": 0.2,
+        "total_trades": 25,
+        "max_drawdown": 0.0450530553836503
+    },
+    "trial_6": {
+        "total_pnl": -59.33513179101851,
+        "win_rate": 0.27722772277227725,
+        "total_trades": 101,
+        "max_drawdown": 0.0683949517464099
+    },
+    "trial_7": {
+        "total_pnl": -61.88535676205787,
+        "win_rate": 0.21052631578947367,
+        "total_trades": 38,
+        "max_drawdown": 0.07292244607087536
+    },
+    "trial_8": {
+        "total_pnl": -114.14160235459677,
+        "win_rate": 0.24731182795698925,
+        "total_trades": 93,
+        "max_drawdown": 0.1412229319819407
+    },
+    "trial_9": {
+        "total_pnl": -98.8821939018907,
+        "win_rate": 0.2033898305084746,
+        "total_trades": 59,
+        "max_drawdown": 0.11160915446864508
+    },
+    "trial_10": {
+        "total_pnl": 1.4544473427175768,
+        "win_rate": 0.4166666666666667,
+        "total_trades": 72,
+        "max_drawdown": 0.037447487636370236
+    },
+    "trial_11": {
+        "total_pnl": -56.141560658562874,
+        "win_rate": 0.3125,
+        "total_trades": 80,
+        "max_drawdown": 0.08156138724509013
+    },
+    "trial_12": {
+        "total_pnl": -51.24474235448927,
+        "win_rate": 0.3333333333333333,
+        "total_trades": 51,
+        "max_drawdown": 0.0704923745450125
+    },
+    "trial_13": {
+        "total_pnl": -74.36004658886827,
+        "win_rate": 0.41414141414141414,
+        "total_trades": 99,
+        "max_drawdown": 0.08265586521407102
+    },
+    "trial_15": {
+        "total_pnl": 17.460788710651507,
+        "win_rate": 0.5121951219512195,
+        "total_trades": 41,
+        "max_drawdown": 0.014136832378953546
+    },
+    "trial_16": {
+        "total_pnl": -99.75882579922823,
+        "win_rate": 0.24285714285714285,
+        "total_trades": 70,
+        "max_drawdown": 0.1063907164421073
+    },
+    "trial_17": {
+        "total_pnl": -93.41591151310152,
+        "win_rate": 0.26582278481012656,
+        "total_trades": 79,
+        "max_drawdown": 0.11031053592548917
+    },
+    "trial_18": {
+        "total_pnl": -81.30753167723026,
+        "win_rate": 0.0,
+        "total_trades": 17,
+        "max_drawdown": 0.08191565227892783
+    },
+    "trial_19": {
+        "total_pnl": -13.313448243617907,
+        "win_rate": 0.35714285714285715,
+        "total_trades": 42,
+        "max_drawdown": 0.03353690736862162
+    },
+    "trial_20": {
+        "total_pnl": -75.95532036685023,
+        "win_rate": 0.325,
+        "total_trades": 80,
+        "max_drawdown": 0.08826883705229432
+    },
+    "trial_21": {
+        "total_pnl": -30.882756786181943,
+        "win_rate": 0.25,
+        "total_trades": 36,
+        "max_drawdown": 0.047633605098449015
+    },
+    "trial_22": {
+        "total_pnl": -64.40552597243216,
+        "win_rate": 0.2830188679245283,
+        "total_trades": 106,
+        "max_drawdown": 0.09567291738021856
+    },
+    "trial_23": {
+        "total_pnl": -85.24331468147058,
+        "win_rate": 0.2875,
+        "total_trades": 80,
+        "max_drawdown": 0.1032833034956388
+    },
+    "trial_24": {
+        "total_pnl": -35.19538030642308,
+        "win_rate": 0.0625,
+        "total_trades": 16,
+        "max_drawdown": 0.03670085949709048
+    },
+    "trial_25": {
+        "total_pnl": 9.88483830923174,
+        "win_rate": 0.5,
+        "total_trades": 84,
+        "max_drawdown": 0.01781752917327688
+    },
+    "trial_26": {
+        "total_pnl": -13.849958208282526,
+        "win_rate": 0.3625,
+        "total_trades": 80,
+        "max_drawdown": 0.07960191020905524
+    },
+    "trial_27": {
+        "total_pnl": -86.05613716440301,
+        "win_rate": 0.35537190082644626,
+        "total_trades": 121,
+        "max_drawdown": 0.10694879812219313
+    },
+    "trial_28": {
+        "total_pnl": -100.44998062761051,
+        "win_rate": 0.3404255319148936,
+        "total_trades": 94,
+        "max_drawdown": 0.11793625545589413
+    },
+    "trial_29": {
+        "total_pnl": -101.65057680365815,
+        "win_rate": 0.37209302325581395,
+        "total_trades": 86,
+        "max_drawdown": 0.11015675092270459
+    },
+    "trial_30": {
+        "total_pnl": -61.15186614605241,
+        "win_rate": 0.4019607843137255,
+        "total_trades": 102,
+        "max_drawdown": 0.08076515485136644
+    },
+    "trial_31": {
+        "total_pnl": -14.308072680813673,
+        "win_rate": 0.4318181818181818,
+        "total_trades": 44,
+        "max_drawdown": 0.02496250529943712
+    },
+    "trial_32": {
+        "total_pnl": -99.53503173697263,
+        "win_rate": 0.19230769230769232,
+        "total_trades": 78,
+        "max_drawdown": 0.10609995314934645
+    },
+    "trial_33": {
+        "total_pnl": -79.98322713126137,
+        "win_rate": 0.24561403508771928,
+        "total_trades": 57,
+        "max_drawdown": 0.08419240327987666
+    },
+    "trial_34": {
+        "total_pnl": -74.879113077143,
+        "win_rate": 0.2413793103448276,
+        "total_trades": 87,
+        "max_drawdown": 0.08392467163552408
+    },
+    "trial_35": {
+        "total_pnl": -45.420442408003716,
+        "win_rate": 0.19230769230769232,
+        "total_trades": 26,
+        "max_drawdown": 0.04788149324039261
+    },
+    "trial_36": {
+        "total_pnl": -41.45570904341926,
+        "win_rate": 0.48201438848920863,
+        "total_trades": 139,
+        "max_drawdown": 0.06194182664480631
+    },
+    "trial_37": {
+        "total_pnl": -26.304237430443084,
+        "win_rate": 0.20930232558139536,
+        "total_trades": 43,
+        "max_drawdown": 0.03331381845010099
+    },
+    "trial_38": {
+        "total_pnl": -8.832072949384163,
+        "win_rate": 0.5287356321839081,
+        "total_trades": 87,
+        "max_drawdown": 0.0414841961664489
+    },
+    "trial_39": {
+        "total_pnl": 13.130252132942653,
+        "win_rate": 0.5227272727272727,
+        "total_trades": 88,
+        "max_drawdown": 0.03767840691883322
+    },
+    "trial_40": {
+        "total_pnl": -46.33431303644726,
+        "win_rate": 0.3389830508474576,
+        "total_trades": 59,
+        "max_drawdown": 0.06672104271060078
+    },
+    "trial_41": {
+        "total_pnl": -10.422032186069629,
+        "win_rate": 0.38461538461538464,
+        "total_trades": 39,
+        "max_drawdown": 0.022275491654980144
+    },
+    "trial_42": {
+        "total_pnl": -101.47816959861284,
+        "win_rate": 0.18181818181818182,
+        "total_trades": 77,
+        "max_drawdown": 0.10797561464055445
+    },
+    "trial_43": {
+        "total_pnl": -13.752185763950866,
+        "win_rate": 0.2608695652173913,
+        "total_trades": 23,
+        "max_drawdown": 0.01879829344562279
+    },
+    "trial_44": {
+        "total_pnl": -92.73093883609991,
+        "win_rate": 0.3561643835616438,
+        "total_trades": 73,
+        "max_drawdown": 0.10195775846886804
+    },
+    "trial_45": {
+        "total_pnl": -80.80733385705753,
+        "win_rate": 0.3163265306122449,
+        "total_trades": 98,
+        "max_drawdown": 0.09705018323370855
+    },
+    "trial_46": {
+        "total_pnl": -90.67781825755281,
+        "win_rate": 0.1780821917808219,
+        "total_trades": 73,
+        "max_drawdown": 0.12709748620416586
+    },
+    "trial_47": {
+        "total_pnl": -49.45872748315962,
+        "win_rate": 0.3,
+        "total_trades": 90,
+        "max_drawdown": 0.06846482692690627
+    },
+    "trial_48": {
+        "total_pnl": -62.5010989942596,
+        "win_rate": 0.27450980392156865,
+        "total_trades": 51,
+        "max_drawdown": 0.08850449655724509
+    },
+    "trial_49": {
+        "total_pnl": -79.22270321115704,
+        "win_rate": 0.0,
+        "total_trades": 17,
+        "max_drawdown": 0.0798675527409132
+    },
+    "trial_50": {
+        "total_pnl": -57.46099042987368,
+        "win_rate": 0.25675675675675674,
+        "total_trades": 74,
+        "max_drawdown": 0.06882163193615923
+    },
+    "trial_51": {
+        "total_pnl": -0.7893700872547234,
+        "win_rate": 0.3894736842105263,
+        "total_trades": 95,
+        "max_drawdown": 0.06017852585832204
+    },
+    "trial_52": {
+        "total_pnl": -142.40162927894153,
+        "win_rate": 0.16666666666666666,
+        "total_trades": 78,
+        "max_drawdown": 0.14885850901827008
+    },
+    "trial_53": {
+        "total_pnl": -32.866142617121966,
+        "win_rate": 0.2916666666666667,
+        "total_trades": 96,
+        "max_drawdown": 0.04733745252178926
+    },
+    "trial_54": {
+        "total_pnl": -189.19043909471424,
+        "win_rate": 0.12359550561797752,
+        "total_trades": 89,
+        "max_drawdown": 0.19636580612310764
+    },
+    "trial_55": {
+        "total_pnl": -94.75310722436524,
+        "win_rate": 0.0,
+        "total_trades": 13,
+        "max_drawdown": 0.09537412662213887
+    },
+    "trial_56": {
+        "total_pnl": -76.78717855248352,
+        "win_rate": 0.35294117647058826,
+        "total_trades": 119,
+        "max_drawdown": 0.08780474470399861
+    },
+    "trial_57": {
+        "total_pnl": -136.5082162347236,
+        "win_rate": 0.18421052631578946,
+        "total_trades": 76,
+        "max_drawdown": 0.150513506397543
+    },
+    "trial_58": {
+        "total_pnl": -6.5129543020147675,
+        "win_rate": 0.23529411764705882,
+        "total_trades": 17,
+        "max_drawdown": 0.009183848662739138
+    },
+    "trial_59": {
+        "total_pnl": -10.581761745688997,
+        "win_rate": 0.4,
+        "total_trades": 50,
+        "max_drawdown": 0.04389988630171147
+    },
+    "trial_60": {
+        "total_pnl": -141.7685890025334,
+        "win_rate": 0.17647058823529413,
+        "total_trades": 85,
+        "max_drawdown": 0.1756629903720399
+    },
+    "trial_61": {
+        "total_pnl": -83.88433826088948,
+        "win_rate": 0.29545454545454547,
+        "total_trades": 88,
+        "max_drawdown": 0.09866714256141679
+    },
+    "trial_62": {
+        "total_pnl": -120.9535643440066,
+        "win_rate": 0.27848101265822783,
+        "total_trades": 79,
+        "max_drawdown": 0.13351436515676654
+    },
+    "trial_63": {
+        "total_pnl": -8.476841287102149,
+        "win_rate": 0.2857142857142857,
+        "total_trades": 21,
+        "max_drawdown": 0.016888988047167913
+    },
+    "trial_64": {
+        "total_pnl": -43.12386866554449,
+        "win_rate": 0.38181818181818183,
+        "total_trades": 55,
+        "max_drawdown": 0.05611859222509333
+    },
+    "trial_65": {
+        "total_pnl": -41.71483393334764,
+        "win_rate": 0.3263157894736842,
+        "total_trades": 95,
+        "max_drawdown": 0.07950980919727244
+    },
+    "trial_66": {
+        "total_pnl": -90.52760311533162,
+        "win_rate": 0.3157894736842105,
+        "total_trades": 114,
+        "max_drawdown": 0.11250793468187288
+    },
+    "trial_67": {
+        "total_pnl": 10.923446759298265,
+        "win_rate": 0.4375,
+        "total_trades": 48,
+        "max_drawdown": 0.027228878222432144
+    },
+    "trial_68": {
+        "total_pnl": -110.35992104513343,
+        "win_rate": 0.10714285714285714,
+        "total_trades": 56,
+        "max_drawdown": 0.11606793845000789
+    },
+    "trial_69": {
+        "total_pnl": -84.01189861950327,
+        "win_rate": 0.3076923076923077,
+        "total_trades": 117,
+        "max_drawdown": 0.10000324709515973
+    },
+    "trial_70": {
+        "total_pnl": -17.738679277664364,
+        "win_rate": 0.38461538461538464,
+        "total_trades": 52,
+        "max_drawdown": 0.0441025580659807
+    },
+    "trial_71": {
+        "total_pnl": 11.429109168987779,
+        "win_rate": 0.5476190476190477,
+        "total_trades": 126,
+        "max_drawdown": 0.018474396645664113
+    },
+    "trial_72": {
+        "total_pnl": -87.57963194827731,
+        "win_rate": 0.3611111111111111,
+        "total_trades": 72,
+        "max_drawdown": 0.09756038531660714
+    },
+    "trial_73": {
+        "total_pnl": -121.36164110929249,
+        "win_rate": 0.17721518987341772,
+        "total_trades": 79,
+        "max_drawdown": 0.1337373308498603
+    },
+    "trial_74": {
+        "total_pnl": -93.79066104638805,
+        "win_rate": 0.22058823529411764,
+        "total_trades": 68,
+        "max_drawdown": 0.12389119263639226
+    },
+    "trial_75": {
+        "total_pnl": -27.022715739205395,
+        "win_rate": 0.22727272727272727,
+        "total_trades": 22,
+        "max_drawdown": 0.02914887963923036
+    },
+    "trial_76": {
+        "total_pnl": -112.38542853651487,
+        "win_rate": 0.2702702702702703,
+        "total_trades": 111,
+        "max_drawdown": 0.14542798249698213
+    },
+    "trial_77": {
+        "total_pnl": -147.18820233747203,
+        "win_rate": 0.1590909090909091,
+        "total_trades": 88,
+        "max_drawdown": 0.1556161501793347
+    },
+    "trial_78": {
+        "total_pnl": -19.147398317593588,
+        "win_rate": 0.36,
+        "total_trades": 50,
+        "max_drawdown": 0.03826092069646461
+    },
+    "trial_79": {
+        "total_pnl": -113.16954196639254,
+        "win_rate": 0.2967032967032967,
+        "total_trades": 91,
+        "max_drawdown": 0.12319189039680459
+    },
+    "trial_80": {
+        "total_pnl": -64.05545857729687,
+        "win_rate": 0.2619047619047619,
+        "total_trades": 84,
+        "max_drawdown": 0.09047810602647868
+    },
+    "trial_81": {
+        "total_pnl": -19.84899561687586,
+        "win_rate": 0.2823529411764706,
+        "total_trades": 85,
+        "max_drawdown": 0.054809249153864696
+    },
+    "trial_82": {
+        "total_pnl": -33.39551534080093,
+        "win_rate": 0.26956521739130435,
+        "total_trades": 115,
+        "max_drawdown": 0.08102627442633957
+    },
+    "trial_83": {
+        "total_pnl": -75.42683611866599,
+        "win_rate": 0.2796610169491525,
+        "total_trades": 118,
+        "max_drawdown": 0.09851301685838246
+    },
+    "trial_84": {
+        "total_pnl": -0.8790420539955095,
+        "win_rate": 0.3684210526315789,
+        "total_trades": 38,
+        "max_drawdown": 0.0371019140014459
+    },
+    "trial_85": {
+        "total_pnl": -2.9519983364686126,
+        "win_rate": 0.32142857142857145,
+        "total_trades": 28,
+        "max_drawdown": 0.014220178716979294
+    },
+    "trial_86": {
+        "total_pnl": -182.50931320475433,
+        "win_rate": 0.14130434782608695,
+        "total_trades": 92,
+        "max_drawdown": 0.1910848189028719
+    },
+    "trial_87": {
+        "total_pnl": -75.49903336908841,
+        "win_rate": 0.2558139534883721,
+        "total_trades": 86,
+        "max_drawdown": 0.09232243290971025
+    },
+    "trial_88": {
+        "total_pnl": -72.29732003052723,
+        "win_rate": 0.3150684931506849,
+        "total_trades": 73,
+        "max_drawdown": 0.09927865397242268
+    },
+    "trial_89": {
+        "total_pnl": -13.7155593495181,
+        "win_rate": 0.5,
+        "total_trades": 104,
+        "max_drawdown": 0.03395095341070018
+    },
+    "trial_90": {
+        "total_pnl": -106.66864768296332,
+        "win_rate": 0.25263157894736843,
+        "total_trades": 95,
+        "max_drawdown": 0.13815392367741625
+    },
+    "trial_91": {
+        "total_pnl": -32.1825120904591,
+        "win_rate": 0.21428571428571427,
+        "total_trades": 28,
+        "max_drawdown": 0.03479390006189885
+    },
+    "trial_92": {
+        "total_pnl": -12.20905656363162,
+        "win_rate": 0.49019607843137253,
+        "total_trades": 102,
+        "max_drawdown": 0.03505723815443132
+    },
+    "trial_93": {
+        "total_pnl": -50.995679845687334,
+        "win_rate": 0.2619047619047619,
+        "total_trades": 84,
+        "max_drawdown": 0.0674994401275486
+    },
+    "trial_94": {
+        "total_pnl": -147.14912335540052,
+        "win_rate": 0.14772727272727273,
+        "total_trades": 88,
+        "max_drawdown": 0.15454554545052496
+    },
+    "trial_95": {
+        "total_pnl": -14.675126184474774,
+        "win_rate": 0.32954545454545453,
+        "total_trades": 88,
+        "max_drawdown": 0.03679560515642392
+    },
+    "trial_96": {
+        "total_pnl": -76.61865187614538,
+        "win_rate": 0.0,
+        "total_trades": 19,
+        "max_drawdown": 0.07792115865603137
+    },
+    "trial_97": {
+        "total_pnl": -107.17504194511845,
+        "win_rate": 0.24390243902439024,
+        "total_trades": 82,
+        "max_drawdown": 0.12371099292411637
+    },
+    "trial_98": {
+        "total_pnl": -115.51741770732701,
+        "win_rate": 0.2361111111111111,
+        "total_trades": 72,
+        "max_drawdown": 0.12811165861066884
+    },
+    "trial_99": {
+        "total_pnl": -175.29318028407644,
+        "win_rate": 0.15151515151515152,
+        "total_trades": 99,
+        "max_drawdown": 0.21782601491030673
+    }
+}

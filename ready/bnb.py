@@ -1,7 +1,7 @@
 import pandas as pd
 import logging
-from background.optimization import optimize_parameters
-from background.backtest import backtest
+from optimization.ready.background.optimization import optimize_parameters
+from optimization.ready.background.backtest.backtest import backtest
 
 # Configure the logging module
 logging.basicConfig(filename='error.log', level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')

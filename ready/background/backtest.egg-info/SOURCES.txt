@@ -1,0 +1,7 @@
+setup.py
+backtest.egg-info/PKG-INFO
+backtest.egg-info/SOURCES.txt
+backtest.egg-info/dependency_links.txt
+backtest.egg-info/top_level.txt
+trials/__init__.py
+trials/backtest.py

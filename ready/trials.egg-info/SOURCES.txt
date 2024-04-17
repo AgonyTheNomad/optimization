@@ -1,0 +1,15 @@
+README.md
+setup.py
+background/__init__.py
+background/analyze_results.py
+background/indicators.py
+background/optimization.py
+background/optimization2.py
+background/test.py
+background/test2.py
+background/trials/__init__.py
+background/trials/backtest.py
+trials.egg-info/PKG-INFO
+trials.egg-info/SOURCES.txt
+trials.egg-info/dependency_links.txt
+trials.egg-info/top_level.txt
