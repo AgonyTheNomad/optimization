@@ -81,7 +81,7 @@ def objective(params, redis_url, csv_path, symbol):
     redis_client.set(params_key, json.dumps(results))
     return results
 
-def run_optimization(client, n_trials=100, csv_directory='C:/Users/jkolt/OneDrive/Desktop/optimize/optimization/ready'):
+def run_optimization(client, n_trials=100, csv_directory='./ready'):
     storage = JournalStorage(JournalRedisStorage(redis_url))
     csv_files = [f for f in os.listdir(csv_directory) if f.endswith('.csv')]
 
@@ -152,7 +152,10 @@ if __name__ == "__main__":
     main()
 
     '''
-    dask scheduler    a
-    dask worker tcp://10.0.0.201:8786 --nworkers 1 --nthreads 1 --memory-limit 3GB      
+    dask scheduler    
+    dask worker tcp://10.0.0.201:8786 --nworkers 24 --nthreads 1 --memory-limit 3GB 
+    dask worker tcp://10.0.0.201:8786 --nworkers 20 --nthreads 1 --memory-limit 3GB  
+
+    python -m background.optimization --optimize   
     
     '''
