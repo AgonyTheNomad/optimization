@@ -141,7 +141,7 @@ def main():
     pr = cProfile.Profile()
     pr.enable()
     if args.optimize:
-        run_optimization(client, 100)
+        run_optimization(client, 400000)
     else:
         logger.info("No optimization flag provided, running a default function...")
         run_optimization(client, 10)
@@ -150,3 +150,9 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+    '''
+    dask scheduler    a
+    dask worker tcp://10.0.0.201:8786 --nworkers 1 --nthreads 1 --memory-limit 3GB      
+    
+    '''
